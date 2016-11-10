@@ -5,6 +5,7 @@ import java.util.Random;
 import Utility.City;
 import Utility.Parameters;
 import Utility.Tour;
+import Utility.Utility;
 
 /**
  * Created by FraccaMan on 08/11/16.
@@ -18,6 +19,7 @@ public class AntColonySystem implements Heuristic {
     private int[] bestTour;
     private int bestTourCost, size;
     private double initialPheromone;
+    private double[][] probability;
 
     public AntColonySystem(Parameters params, int[][] matrix, Tour tour, Random r){
         this.params = params;
@@ -26,6 +28,7 @@ public class AntColonySystem implements Heuristic {
         this.matrix = matrix;
         this.pheromone = new double[size][size];
         this.bestTour = new int[size];
+        this.probability = new double[size][size];
         for (int i = 0; i < size; i++) {
             this.bestTour[i] = tour.getTuor()[i].getIndex();
         }
@@ -41,10 +44,28 @@ public class AntColonySystem implements Heuristic {
                 pheromone[j][i] = initialPheromone;
             }
         }
+
+        for (int i = 0; i < pheromone.length; i++) {
+            for (int j = i + 1; j < pheromone.length; j++) {
+                double update = localProbability(i, j);
+                probability[i][j] = update;
+                probability[j][i] = update;
+            }
+        }
+
+    }
+
+    public double localProbability(int r, int s){
+       return (1d - params.getPheromoneHeuristic()) * pheromone[r][s] + params.getPheromoneHeuristic() * initialPheromone;
     }
 
     public void localUpdate(int r, int s){
         pheromone[r][s] = (1d - params.getPheromoneHeuristic()) * pheromone[r][s] + params.getPheromoneHeuristic() * initialPheromone;
+        probability[r][s] = randomProportionalRule(r,s);
+    }
+
+    private double randomProportionalRule(int previous, int next) {
+        return Utility.pow(pheromone[previous][next], params.getAlfa()) * Utility.pow(1d / (matrix[previous][next] + 0.0001), params.getBeta());
     }
 
     public void globalUpdate(){
@@ -70,7 +91,7 @@ public class AntColonySystem implements Heuristic {
     public Ant[] initAnts(){
         Ant[] ants = new Ant[params.getAnts()];
         for (int i = 0; i < params.getAnts(); i++) {
-            ants[i] = (new Ant(params, r, matrix,pheromone, size, this));
+            ants[i] = (new Ant(params, r, matrix,pheromone, size, this, probability));
         }
         return ants;
     }

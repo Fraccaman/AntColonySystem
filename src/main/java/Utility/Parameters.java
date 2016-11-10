@@ -9,22 +9,25 @@ public class Parameters {
     private double beta;
     private double q;
     private double pheromoneHeuristic;
+    private double memory;
     private int ants;
 
-    public Parameters(double alfa, double beta, double q, double pheromoneHeuristic, int ants) {
+    public Parameters(double alfa, double beta, double q, double pheromoneHeuristic, double memory, int ants) {
         this.alfa = alfa;
         this.beta = beta;
         this.q = q;
         this.pheromoneHeuristic = pheromoneHeuristic;
         this.ants = ants;
+        this.memory = memory;
     }
 
     public Parameters() {
-        this.alfa = 0.5d;
-        this.beta = 7d;
-        this.q = 0.85d;
+        this.alfa = 0.6d;
+        this.beta = 5d;
+        this.q = 0.95d;
         this.pheromoneHeuristic = 0.1d;
-        this.ants = 4;
+        this.ants = 5;
+        this.memory = 0.5d;
     }
 
     // Getters and Setters
@@ -69,7 +72,14 @@ public class Parameters {
         this.ants = ants;
     }
 
-    // Helpers
+    public double getMemory() {
+        return memory;
+    }
+
+    public void setMemory(double memory) {
+        this.memory = memory;
+    }
+// Helpers
 
     @Override
     public String toString() {
@@ -86,7 +96,7 @@ public class Parameters {
 
     // paper
     public Parameters defaultParameters() {
-        return new Parameters(0.1d,2d,0.9d, 0.1d,100);
+        return new Parameters(0.1d,2d,0.9d, 0.1d,0.05, 100);
     }
 }
 

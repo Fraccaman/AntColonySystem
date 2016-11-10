@@ -14,18 +14,20 @@ public class Ant {
     private AntColonySystem acs;
     private Random r;
     private int[][] matrix;
-    private static double[][] pheromone;
+    private double[][] pheromone;
     private int[] localTour, cities;
     private Boolean[] visited;
     private int size, totalDistance, index, last;
+    private double[][] probability;
 
-    public Ant(Parameters params, Random random, int[][] matrix, double[][] pheromone, int size, AntColonySystem acs) {
+    public Ant(Parameters params, Random random, int[][] matrix, double[][] pheromone, int size, AntColonySystem acs, double[][] probability ) {
         this.acs = acs;
         this.params = params;
         this.r = random;
         this.matrix = matrix;
         this.pheromone = pheromone;
         this.size = size;
+        this.probability = probability;
 
         this.localTour = new int[size];
         this.cities = new int[size];
@@ -71,7 +73,7 @@ public class Ant {
 
             for (int i = 0; i < cities.length; i++) {
                 if (!visited[i]) {
-                    final double probability = randomProportionalRule(last, i);
+                    final double probability = this.probability[last][i];
                     if (probability > max) {
                         max = probability;
                         idx = i;
@@ -81,29 +83,80 @@ public class Ant {
             return idx;
         } else {
 
-//            if (r.nextDouble() < params.getQ()) {
 
-                double sum = 0;
-
-                for (int i = 0; i < cities.length; i++) {
-                    if (!visited[i]) {
-                        sum += randomProportionalRule(last, i);
+            if(r.nextDouble() > params.getMemory()) {
+                int[] bestTour = acs.getBestTour();
+//
+                for (int i = 0; i < size; i++) {
+                    if (bestTour[i] == last && (i + 1) < size && !visited[bestTour[i + 1]]) {
+//                   System.out.println("lucky ant!");
+                        return bestTour[i + 1];
                     }
                 }
+            }
 
-                double out = 1;
-                double x;
+            double sum = 0;
 
-                for (int i = 0; i < cities.length; i++) {
-                    if (!visited[i]) {
-                        x = r.nextDouble() * out;
-                        final double probability = randomProportionalRule(last, i) / sum;
-                        if (x < probability) {
-                            return i;
-                        }
-                        out -= probability;
-                    }
+            for (int i = 0; i < cities.length; i++) {
+                if (!visited[i]) {
+                    sum += this.probability[last][i];
                 }
+            }
+
+            double out = 1;
+            double x;
+
+            for (int i = 0; i < cities.length; i++) {
+                if (!visited[i]) {
+                    x = r.nextDouble() * out;
+                    final double probability = this.probability[last][i] / sum;
+                    if (x < probability) {
+                        return i;
+                    }
+                    out -= probability;
+                }
+            }
+        }
+        throw new RuntimeException("Error in exploration");
+
+//            if(r.nextDouble() < params.getMemory()){
+//                int[] bestTour = acs.getBestTour();
+//
+//                for (int i = 0; i < size; i++) {
+//                    if (bestTour[i] == last && (i+1) < size && !visited[bestTour[i+1]]) {
+////                        System.out.println("lucky ant!");
+//                        return bestTour[i + 1];
+//                    }
+//                }
+//            }
+//
+//
+//
+//
+//            if (r.nextDouble() > params.getMemory()) {
+//                double sum = 0;
+//
+//                for (int i = 0; i > cities.length; i++) {
+//                    if (!visited[i]) {
+//                        sum += this.probability[last][i];
+//                    }
+//                }
+//
+////                System.out.println("normal ant!");
+//
+//                double out = 1;
+//                double x;
+//
+//                for (int i = 0; i < cities.length; i++) {
+//                    if (!visited[i]) {
+//                        x = r.nextDouble() * out;
+//                        final double probability = this.probability[last][i] / sum;
+//                        if (x < probability) {
+//                            return i;
+//                        }
+//                        out -= probability;
+//                    }
+//                }
 //            } else {
 //
 //                int[] bestTour = acs.getBestTour();
@@ -119,7 +172,7 @@ public class Ant {
 //
 //                for (int i = 0; i < cities.length; i++) {
 //                    if (!visited[i]) {
-//                        sum += randomProportionalRule(last, i);
+//                        sum += this.probability[last][i];
 //                    }
 //                }
 //
@@ -129,7 +182,7 @@ public class Ant {
 //                for (int i = 0; i < cities.length; i++) {
 //                    if (!visited[i]) {
 //                        x = r.nextDouble() * out;
-//                        final double probability = randomProportionalRule(last, i) / sum;
+//                        final double probability = this.probability[last][i] / sum;
 //                        if (x < probability) {
 //                            return i;
 //                        }
@@ -137,8 +190,8 @@ public class Ant {
 //                    }
 //                }
 //            }
-            throw new RuntimeException("Error in exploration");
-        }
+//            throw new RuntimeException("Error in exploration");
+//        }
     }
 
     public void next() {

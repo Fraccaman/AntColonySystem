@@ -77,13 +77,15 @@ public class Main {
 //        Ant[] ants = antColonySystem.initAnts();
 
 
-        while (((System.currentTimeMillis() - startTime) < endTime && loop++ < 2000)) {
+        while (((System.currentTimeMillis() - startTime) < endTime) && loop++ < 2000) {
 
             Ant[] ants = antColonySystem.initAnts();
 
             for (int i = 0; i < container.getDimension(); i++) {
                 antColonySystem.move(ants);
             }
+
+//            System.out.println("-----------");
 
             for (int i = 0; i < params.getAnts(); i++) {
                 ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour()));
@@ -94,8 +96,8 @@ public class Main {
             antColonySystem.globalUpdate();
 //            System.out.println("loop: " + loop );
         }
-        debug.writepath(antColonySystem.getBestTour(), "lucach130");
-
+        System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()));
+        System.out.println("Iteration over seconds: " + loop / ((System.currentTimeMillis() - startTime) / 1000.0));
         System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
     }
 
