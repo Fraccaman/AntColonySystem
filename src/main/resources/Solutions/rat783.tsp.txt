@@ -1,1 +1,1 @@
-BestKnown | Seed | Cost: 8806 | 853631 | 8888
+BestKnown | Seed | Cost: 8806 | 294169 | 8828

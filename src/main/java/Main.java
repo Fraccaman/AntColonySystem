@@ -82,7 +82,7 @@ public class Main {
 //        Ant[] ants = antColonySystem.initAnts();
 
 
-        while (((System.currentTimeMillis() - startTime) < endTime) && loop < 2000) {
+        while (((System.currentTimeMillis() - startTime) < endTime)) {
 
             loop++;
 

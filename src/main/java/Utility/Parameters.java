@@ -22,12 +22,12 @@ public class Parameters {
     }
 
     public Parameters() {
-        this.alfa = 0.5d;
-        this.beta = 5d;
-        this.q = 0.90d;
+        this.alfa = 0.2d;
+        this.beta = 1d;
+        this.q = 0.85d;
         this.pheromoneHeuristic = 0.1d;
-        this.ants = 5;
-        this.memory = 0.20d;
+        this.ants = 4;
+        this.memory = 0d;
     }
 
     // Getters and Setters
