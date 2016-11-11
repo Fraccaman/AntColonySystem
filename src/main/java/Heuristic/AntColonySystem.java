@@ -88,6 +88,7 @@ public class AntColonySystem implements Heuristic {
         }
 
         pheromone[bestTour[bestTour.length - 1]][bestTour[0]] += (params.getAlfa() * tao);
+        probability[(bestTour.length - 1)][bestTour[0]] = randomProportionalRule((bestTour.length - 1),bestTour[0]);
     }
 
     public Ant[] initAnts(){
