@@ -63,9 +63,12 @@ public class TwoOpt implements LocalSearch {
     private void swap(int i, int j, int[] cities) {
         int tmp;
         while (i < j) {
-            tmp = cities[i];
-            cities[i] = cities[j];
-            cities[j] = tmp;
+//            tmp = cities[i];
+//            cities[i] = cities[j];
+//            cities[j] = tmp;
+            cities[i] = cities[i] ^ cities[j];
+            cities[j] = cities[i] ^ cities[j];
+            cities[i] = cities[i] ^ cities[j];
             i++;
             j--;
         }

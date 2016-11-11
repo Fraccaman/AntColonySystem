@@ -1,7 +1,11 @@
 import com.google.common.base.Stopwatch;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -29,8 +33,9 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
         long endTime = 180000;
-        int totalCost = Integer.MAX_VALUE;
+        int lastBest = Integer.MAX_VALUE;
         int bestSeed = 0;
+
         // Start timer
         Stopwatch stopwatch = Stopwatch.createStarted();
 
@@ -77,7 +82,9 @@ public class Main {
 //        Ant[] ants = antColonySystem.initAnts();
 
 
-        while (((System.currentTimeMillis() - startTime) < endTime) && loop++ < 2000) {
+        while (((System.currentTimeMillis() - startTime) < endTime) && loop < 2000) {
+
+            loop++;
 
             Ant[] ants = antColonySystem.initAnts();
 
@@ -96,9 +103,28 @@ public class Main {
             antColonySystem.globalUpdate();
 //            System.out.println("loop: " + loop );
         }
-        System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()));
+        writeSeed(container.getName(), container.getBest(), seedInt, antColonySystem.getBestTourCost());
+//        System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()) * 100 );
         System.out.println("Iteration over seconds: " + loop / ((System.currentTimeMillis() - startTime) / 1000.0));
-        System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
+//        System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
+    }
+
+    private static void writeSeed(String filename, int bestCost, int seed, int antBestCost) throws IOException {
+
+        File file = new File("/Users/FraccaMan/Desktop/cup/ACS_TSP/src/main/resources/Solutions/" + filename + ".txt");
+        int bestYet;
+        if(file.exists()){
+            BufferedReader brTest = new BufferedReader(new FileReader("/Users/FraccaMan/Desktop/cup/ACS_TSP/src/main/resources/Solutions/" + filename + ".txt"));
+            String test =  brTest.readLine().split(" | ")[9];
+            bestYet = Integer.parseInt(test.trim());
+        } else {
+            bestYet = Integer.MAX_VALUE;
+        }
+        if(bestYet > antBestCost){
+            PrintWriter outputStream = new PrintWriter("/Users/FraccaMan/Desktop/cup/ACS_TSP/src/main/resources/Solutions/" + filename + ".txt");
+            outputStream.print("BestKnown | Seed | Cost: " + bestCost + " | " + seed + " | " + antBestCost + "\n");
+            outputStream.close();
+        }
     }
 
 

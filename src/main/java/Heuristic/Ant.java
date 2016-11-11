@@ -16,7 +16,7 @@ public class Ant {
     private int[][] matrix;
     private double[][] pheromone;
     private int[] localTour, cities;
-    private Boolean[] visited;
+    private boolean[] visited;
     private int size, totalDistance, index, last;
     private double[][] probability;
 
@@ -31,7 +31,7 @@ public class Ant {
 
         this.localTour = new int[size];
         this.cities = new int[size];
-        this.visited = new Boolean[size];
+        this.visited = new boolean[size];
 
         initAnt();
     }

@@ -7,7 +7,9 @@ public class Seeds {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        Main.run(args);
+        while (true) {
+            Main.run(args);
+        }
 
     }
 
