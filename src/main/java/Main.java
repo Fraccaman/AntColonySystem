@@ -100,13 +100,13 @@ public class Main {
             antColonySystem.globalUpdate();
 //            System.out.println("loop: " + loop );
         }
-        writeSeed(container.getName(), container.getBest(), seedInt, antColonySystem.getBestTourCost());
+        writeSeed(container.getName(), container.getBest(), seedInt, antColonySystem.getBestTourCost(), params);
         System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()) * 100 );
         System.out.println("Iteration over seconds: " + loop / ((System.currentTimeMillis() - startTime) / 1000.0));
         System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
     }
 
-    private static void writeSeed(String filename, int bestCost, int seed, int antBestCost) throws IOException {
+    private static void writeSeed(String filename, int bestCost, int seed, int antBestCost, Parameters params) throws IOException {
 
         File file = new File("/Users/FraccaMan/Desktop/cup/ACS_TSP/src/main/resources/Solutions/" + filename + ".txt");
         int bestYet;
@@ -117,9 +117,10 @@ public class Main {
         } else {
             bestYet = Integer.MAX_VALUE;
         }
-        if(bestYet > antBestCost){
+        if(bestYet >= antBestCost){
             PrintWriter outputStream = new PrintWriter("/Users/FraccaMan/Desktop/cup/ACS_TSP/src/main/resources/Solutions/" + filename + ".txt");
             outputStream.print("BestKnown | Seed | Cost: " + bestCost + " | " + seed + " | " + antBestCost + "\n");
+            outputStream.print("Alfa: " + params.getAlfa() + " Beta: " + params.getBeta() + " Q: " + params.getQ() + " Ph: " + params.getPheromoneHeuristic() + " Ants: " + params.getAnts() + " Memory: " + params.getMemory());
             outputStream.close();
         }
     }

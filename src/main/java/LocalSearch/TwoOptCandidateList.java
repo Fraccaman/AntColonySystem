@@ -3,7 +3,7 @@ package LocalSearch;
 /**
  * Created by FraccaMan on 09/11/16.
  */
-public class TwoOptCandidateList implements LocalSearch {
+public class TwoOptCandidateList {
 
     private int[][] matrix;
     private int dimension;

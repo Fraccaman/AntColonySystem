@@ -75,9 +75,9 @@ public class AntColonySystem implements Heuristic {
             for (int j = i + 1; j < pheromone.length; j++) {
                 double update = (( 1d - params.getAlfa()) * pheromone[i][j]);
                 pheromone[i][j] = update;
-                pheromone[j][i] = update;
+//                pheromone[j][i] = update;
                 probability[i][j] = randomProportionalRule(i,j);
-                probability[j][i] = randomProportionalRule(j,i);
+//                probability[j][i] = probability[i][j];
             }
         }
 
@@ -89,7 +89,7 @@ public class AntColonySystem implements Heuristic {
         }
 
         pheromone[bestTour[bestTour.length - 1]][bestTour[0]] += (params.getAlfa() * tao);
-        probability[(bestTour.length - 1)][bestTour[0]] = randomProportionalRule((bestTour.length - 1),bestTour[0]);
+        probability[bestTour[bestTour.length - 1]][bestTour[0]] = randomProportionalRule((bestTour.length - 1),bestTour[0]);
     }
 
     public Ant[] initAnts(){

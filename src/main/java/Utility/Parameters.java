@@ -21,13 +21,27 @@ public class Parameters {
         this.memory = memory;
     }
 
+//    this.alfa = 0.2d;
+//        this.beta = 1d;
+//        this.q = 0.85d;
+//        this.pheromoneHeuristic = 0.1d;
+//        this.ants = 4;
+//        this.memory = 0.2d;
+
+//        this.alfa = 0.5d;
+//        this.beta = 5d;
+//        this.q = 0.90d;
+//        this.pheromoneHeuristic = 0.1d;
+//        this.ants = 5;
+//        this.memory = 0.15d;
+
     public Parameters() {
-        this.alfa = 0.2d;
-        this.beta = 1d;
-        this.q = 0.85d;
+        this.alfa = 0.3d;
+        this.beta = 5d;
+        this.q = 0.90d;
         this.pheromoneHeuristic = 0.1d;
-        this.ants = 4;
-        this.memory = 0.2d;
+        this.ants = 5;
+        this.memory = 0.15d;
     }
 
     // Getters and Setters
