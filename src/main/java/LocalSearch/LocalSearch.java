@@ -8,6 +8,6 @@ import Utility.Container;
  */
 public interface LocalSearch {
 
-    int ElementaryMyDearWatson(int[] cities);
+    int ElementaryMyDearWatson(int[] cities, boolean first_improvement);
 
 }

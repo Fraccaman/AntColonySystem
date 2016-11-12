@@ -16,7 +16,7 @@ public class TwoOpt implements LocalSearch {
         this.dimension = matrix.length;
     }
 
-    public int ElementaryMyDearWatson(int[] cities) {
+    public int ElementaryMyDearWatson(int[] cities, boolean first_improvement) {
         int bestGain = Integer.MAX_VALUE, localGain = 0;
         int first = -1, second = -1, iteration = 0, a = 0, b = 0, c = 0, d = 0;
         boolean repeat = true;
@@ -42,6 +42,8 @@ public class TwoOpt implements LocalSearch {
                         first = i;
                         second = j;
                         bestGain = localGain;
+                        if(first_improvement)
+                            break;
                     }
                 }
                 if (bestGain < 0) {

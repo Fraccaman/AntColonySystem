@@ -27,7 +27,7 @@ public class Parameters {
         this.q = 0.85d;
         this.pheromoneHeuristic = 0.1d;
         this.ants = 4;
-        this.memory = 0d;
+        this.memory = 0.2d;
     }
 
     // Getters and Setters

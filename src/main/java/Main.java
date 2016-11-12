@@ -68,9 +68,6 @@ public class Main {
 
         TwoOpt twoOpt = new TwoOpt(container.getMatrix());
         TwoOptCandidateList twoOptCandidateList = new TwoOptCandidateList(candidateList, container.getMatrix(), 20);
-//        twoOptCandidateList.ElementaryMyDearWatson(tour.getTuor());
-//        tour.setCost(tour.getTourCost(tour.getTuor(), container));
-//        System.out.println("Cost TwoOpt = " + tour.getCost());
 
         Parameters params = new Parameters();
 
@@ -95,7 +92,7 @@ public class Main {
 //            System.out.println("-----------");
 
             for (int i = 0; i < params.getAnts(); i++) {
-                ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour()));
+                ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour(), false));
 //                System.out.println("ants[i].getTotalDistance() = " + ants[i].getTotalDistance());
             }
 
@@ -104,9 +101,9 @@ public class Main {
 //            System.out.println("loop: " + loop );
         }
         writeSeed(container.getName(), container.getBest(), seedInt, antColonySystem.getBestTourCost());
-//        System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()) * 100 );
+        System.out.println("Error: " + ( (double) Math.abs(container.getBest() - antColonySystem.getBestTourCost()) / container.getBest()) * 100 );
         System.out.println("Iteration over seconds: " + loop / ((System.currentTimeMillis() - startTime) / 1000.0));
-//        System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
+        System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
     }
 
     private static void writeSeed(String filename, int bestCost, int seed, int antBestCost) throws IOException {
