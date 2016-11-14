@@ -20,9 +20,9 @@ public class Parameters {
     }
 
     public Parameters() {
-        this.alfa = 0.5d;
-        this.beta = 7d;
-        this.q = 0.85d;
+        this.alfa = 0.2d;
+        this.beta = 2d;
+        this.q = 0.9d;
         this.pheromoneHeuristic = 0.1d;
         this.ants = 4;
     }
@@ -84,7 +84,6 @@ public class Parameters {
 
     // Methods
 
-    // paper
     public Parameters defaultParameters() {
         return new Parameters(0.1d,2d,0.9d, 0.1d,100);
     }

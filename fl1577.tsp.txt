@@ -1,0 +1,3 @@
+BestKnown | Seed | Cost: 22249 | 266940 | 22414
+Error: 0.7416063643309811
+Alfa: 0.5 Beta: 7.0 Q: 0.85 Ph: 0.1 Ants: 10

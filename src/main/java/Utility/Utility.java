@@ -81,12 +81,6 @@ public final class Utility {
         sort(a, aux, 0, len - 1);
     }
 
-//    public static double pow(double x, int n) {
-//        if (n == 0) return 1;
-//        if (n == 2) return x * x;
-//        if (n % 2 == 0) return pow(pow(x, n / 2), 2);
-//        else return x * pow(pow(x, n / 2), 2);
-//    }
     public static double pow(double a, double b) {
         final long tmp = Double.doubleToLongBits(a);
         final long tmp2 = (long) (b * (tmp - 4606921280493453312L)) + 4606921280493453312L;

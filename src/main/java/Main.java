@@ -1,18 +1,18 @@
 import com.google.common.base.Stopwatch;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import Building.NearestNeighbor;
 import Heuristic.Ant;
 import Heuristic.AntColonySystem;
-import LocalSearch.CandidateList;
 import LocalSearch.TwoOpt;
-import LocalSearch.TwoOptCandidateList;
 import Utility.Container;
-import Utility.Debug;
 import Utility.Parameters;
 import Utility.Tour;
 
@@ -24,60 +24,35 @@ public class Main {
     private static final Pattern COMPILE = Pattern.compile("\\\\");
     private static final Pattern PATTERN = Pattern.compile("\\D+");
 
-    public static void run(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
 
         long startTime = System.currentTimeMillis();
         long endTime = 180000;
-        int totalCost = Integer.MAX_VALUE;
-        int bestSeed = 0;
-        // Start timer
-        Stopwatch stopwatch = Stopwatch.createStarted();
-
-        Random seed = new Random();
-        int seedInt = seed.nextInt(1000000);
-//        int seedInt = 15639;
-        System.out.println("seed is: " + seedInt);
-
-        Random r = new Random(seedInt);
-
-        // Set debug environment
-        Debug debug = new Debug(true);
-        int iterations = 0;
 
         // Check if path is valid
         if (!isValidPath(args)) System.exit(0);
 
         // Setup container
-        Container container = new Container(getDimension(args[0]), getFileName(args[0]));
+        Container container = new Container(getDimension(args[0]), getFileName(args[0]), args[1]);
         container.populateContainer(args[0]);
         container.populateMatrix();
+
+        Random r = new Random(container.getSeed());
 
         NearestNeighbor nearestNeighbor = new NearestNeighbor(container.getMatrix(), r);
         Tour tour = nearestNeighbor.ElementaryMyDearWatson(container.getNodes(), -1);
         tour.setCost(tour.getTourCost(tour.getTuor(), container));
-//        System.out.println("Cost NearestNeighbor = " + tour.getCost());
-
-        CandidateList candidates = new CandidateList(container.getMatrix(), 30);
-        int[][] candidateList = candidates.buildCandidates();
 
         TwoOpt twoOpt = new TwoOpt(container.getMatrix());
-        TwoOptCandidateList twoOptCandidateList = new TwoOptCandidateList(candidateList, container.getMatrix(), 20);
-//        twoOptCandidateList.ElementaryMyDearWatson(tour.getTuor());
-//        tour.setCost(tour.getTourCost(tour.getTuor(), container));
-//        System.out.println("Cost TwoOpt = " + tour.getCost());
+        Parameters params = setupParameters(container.getName());
+        System.out.println(params.toString());
 
-        Parameters params = new Parameters();
 
         AntColonySystem antColonySystem = new AntColonySystem(params, container.getMatrix(), tour, r);
         antColonySystem.initPheromone();
 
-        int loop = 0;
-
-//        Ant[] ants = antColonySystem.initAnts();
-
-
-        while (((System.currentTimeMillis() - startTime) < endTime && loop++ < 2000)) {
+        while (((System.currentTimeMillis() - startTime) < endTime)) {
 
             Ant[] ants = antColonySystem.initAnts();
 
@@ -87,18 +62,38 @@ public class Main {
 
             for (int i = 0; i < params.getAnts(); i++) {
                 ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour()));
-//                System.out.println("ants[i].getTotalDistance() = " + ants[i].getTotalDistance());
             }
 
             antColonySystem.setBestTour(ants);
             antColonySystem.globalUpdate();
-//            System.out.println("loop: " + loop );
         }
-        debug.writepath(antColonySystem.getBestTour(), "lucach130");
-
-        System.out.println(("time: " + stopwatch)); // formatted string like "12.3 ms"
+        writeSeed(container.getName(), container.getBest(), container.getSeed(), antColonySystem.getBestTourCost(), params, antColonySystem.getBestTour());
+        System.out.println("Best Tour found with cost: " + antColonySystem.getBestTourCost());
     }
 
+    private static void writeSeed(String filename, int bestCost, int seed, int antBestCost, Parameters params, int[] cities) throws IOException {
+
+        File file = new File(filename + ".txt");
+        int bestYet;
+        if(file.exists()){
+            BufferedReader brTest = new BufferedReader(new FileReader(filename + ".txt"));
+            String test =  brTest.readLine().split(" | ")[9];
+            bestYet = Integer.parseInt(test.trim());
+        } else {
+            bestYet = Integer.MAX_VALUE;
+        }
+        if(bestYet >= antBestCost){
+            PrintWriter outputStream = new PrintWriter(filename + ".txt");
+            outputStream.print("BestKnown | Seed | Cost: " + bestCost + " | " + seed + " | " + antBestCost + "\n");
+            outputStream.print("Error: " + ( (double) Math.abs((bestCost - antBestCost))/ bestCost ) * 100 + "\n");
+            outputStream.print("Alfa: " + params.getAlfa() + " Beta: " + params.getBeta() + " Q: " + params.getQ() + " Ph: " + params.getPheromoneHeuristic() + " Ants: " + params.getAnts() + "\n");
+            outputStream.print("Tour: ");
+            for (int i = 0; i < cities.length; i++) {
+                outputStream.print(cities[i] + " ");
+            }
+            outputStream.close();
+        }
+    }
 
     // Private Methods
 
@@ -119,7 +114,7 @@ public class Main {
     }
 
     public static Boolean isValidPath(String[] args) {
-        if (args.length != 1) {
+        if (args.length != 2) {
             _usage();
             return false;
         }
@@ -134,5 +129,30 @@ public class Main {
         }
     }
 
+    public static Parameters setupParameters(String filename){
 
+        if(filename.equals("eil76.tsp")) {
+            return new Parameters(0.2d, 2d, 0.9d, 0.1d, 5);
+        } else if (filename.equals("kroA100.tsp")){
+            return new Parameters(0.2d, 2d, 0.9d, 0.1d, 5);
+        } else if (filename.equals("ch130.tsp")) {
+            return new Parameters(0.2d, 2d, 0.9d, 0.1d, 4);
+        } else if (filename.equals("d198.tsp")) {
+            return new Parameters(0.5d, 5d,0.9d, 0.1d, 5);
+        } else if(filename.equals("lin318.tsp")) {
+            return new Parameters(0.12, 2d, 0.9d, 0.1d, 5);
+        } else if(filename.equals("pr439.tsp")) {
+            return new Parameters(0.2d, 2d, 0.85d, 0.1d, 5);
+        } else if(filename.equals("pcb442.tsp")) {
+            return new Parameters(0.2d,2d,0.9d, 0.1d, 5);
+        } else if(filename.equals("rat783.tsp")) {
+            return new Parameters(0.2d, 2d, 0.85d, 0.1d, 5);
+        } else if(filename.equals("u1060.tsp")) {
+            return new Parameters(0.5d, 5d, 0.9d, 0.1d, 5);
+        } else if(filename.equals("fl1577.tsp")) {
+            return new Parameters(0.5d, 7d, 0.85d, 0.1d, 10);
+        }
+        System.out.println("DEFAULT PARAMETER");
+        return new Parameters(0.1d, 2d, 0.9d, 0.1d, 5);
+    }
 }

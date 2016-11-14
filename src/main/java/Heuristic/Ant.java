@@ -81,8 +81,6 @@ public class Ant {
             return idx;
         } else {
 
-//            if (r.nextDouble() < params.getQ()) {
-
                 double sum = 0;
 
                 for (int i = 0; i < cities.length; i++) {
@@ -104,39 +102,6 @@ public class Ant {
                         out -= probability;
                     }
                 }
-//            } else {
-//
-//                int[] bestTour = acs.getBestTour();
-//
-//                for (int i = 0; i < size; i++) {
-//                    if (bestTour[i] == last && (i+1) < size && !visited[bestTour[i+1]]) {
-////                        System.out.println("lucky ant!");
-//                        return bestTour[i + 1];
-//                    }
-//                }
-//
-//                double sum = 0;
-//
-//                for (int i = 0; i < cities.length; i++) {
-//                    if (!visited[i]) {
-//                        sum += randomProportionalRule(last, i);
-//                    }
-//                }
-//
-//                double out = 1;
-//                double x;
-//
-//                for (int i = 0; i < cities.length; i++) {
-//                    if (!visited[i]) {
-//                        x = r.nextDouble() * out;
-//                        final double probability = randomProportionalRule(last, i) / sum;
-//                        if (x < probability) {
-//                            return i;
-//                        }
-//                        out -= probability;
-//                    }
-//                }
-//            }
             throw new RuntimeException("Error in exploration");
         }
     }
@@ -154,20 +119,6 @@ public class Ant {
 
     public int getTotalDistance() {
         return this.totalDistance;
-    }
-
-    public void resetAnt() {
-        initAnt();
-//        for (int i = 0; i < size; i++) {
-//            this.visited[i] = false;
-//            this.localTour[i] = 0;
-//        }
-//        this.totalDistance = 0;
-//        this.last = -1;
-//        this.index = 0;
-
-//        int random = r.nextInt(130);
-//        updateState(random);
     }
 
     public int[] getLocalTour() {

@@ -27,7 +27,6 @@ public class NearestNeighbor implements Building {
 
     private Tour _computeNN(City[] cities, int seed) {
 
-//        int idx = (System.getenv("index") != null && !System.getenv("index").equals("")) ? Integer.parseInt(System.getenv("index")) : _seed(container.getDimension());
         seed = r.nextInt(dimension);
         int best_cost = Integer.MAX_VALUE;
         City start = cities[seed];

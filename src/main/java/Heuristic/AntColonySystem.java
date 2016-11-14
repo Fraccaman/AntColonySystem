@@ -87,7 +87,6 @@ public class AntColonySystem implements Heuristic {
 
         for (int i = 0; i < ants.length; i++) {
             if(ants[i].getTotalDistance() < bestTourCost){
-                System.out.println("New Best Tour Found: = " + ants[i].getTotalDistance());
                 this.bestTour = ants[i].getLocalTour();
                 this.bestTourCost = ants[i].getTotalDistance();
             }

@@ -19,9 +19,13 @@ public class Container {
     private City[] cities;
     private int[][] matrix;
 
-    public Container(int dimension, String name) {
+    private int seed;
+
+    public Container(int dimension, String name, String seed) {
         this.dimension = dimension;
         this.name = name;
+        this.seed =  Integer.parseInt(seed);
+        System.out.println("Started problem " + name + " with seed = " + seed);
 
         // initialize arrays
         cities = new City[dimension];
@@ -29,6 +33,14 @@ public class Container {
     }
 
     // Getter and Setter
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
 
     public int getBest() {
         return best;
@@ -122,18 +134,10 @@ public class Container {
     public void populateMatrix(){
         for (int i = 0; i < getDimension(); i++) {
             for (int j = i + 1; j < getDimension(); j++) {
-//
-//                if((long) _distance(getNode(i), getNode(j)) != (long) _distanceFast(getNode(i), getNode(j))){
-//                    System.out.println((double) _distance(getNode(i), getNode(j)) + " " + (long) _distance(getNode(i), getNode(j)) + " " + (double) _distanceFast(getNode(i), getNode(j)) + " " + (long) _distanceFast(getNode(i), getNode(j)));
-//                    System.out.println("An error in the distance matrix was found!");
-////                    System.exit(-1);
-//                }
                 int distance = (i == j) ? 0 : (int) _distance(getNode(i), getNode(j));
-
                 matrix[j][i] = distance;
                 matrix[i][j] = distance;
             }
         }
     }
-
 }
