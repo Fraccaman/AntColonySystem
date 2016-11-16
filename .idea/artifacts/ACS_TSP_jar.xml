@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ACS_TSP:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ACS_TSP_jar</output-path>
+    <root id="archive" name="ACS_TSP.jar">
+      <element id="module-output" name="ACS_TSP" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/guava/guava/18.0/guava-18.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/lib/tools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/chrisnewland/jitwatch/1.0.0/jitwatch-1.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
