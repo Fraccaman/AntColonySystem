@@ -50,7 +50,7 @@ public class AntColonySystem implements Heuristic {
         pheromone[r][s] = (1d - params.getPheromoneHeuristic()) * pheromone[r][s] + params.getPheromoneHeuristic() * initialPheromone;
     }
 
-    public void globalUpdate(){
+    private void globalUpdate(){
         double tao = 1d / bestTourCost;
         int r, s;
 
@@ -70,7 +70,7 @@ public class AntColonySystem implements Heuristic {
         pheromone[bestTour[bestTour.length - 1]][bestTour[0]] += (params.getAlfa() * tao);
     }
 
-    public Ant[] initAnts(){
+    private Ant[] initAnts(){
         Ant[] ants = new Ant[params.getAnts()];
         for (int i = 0; i < params.getAnts(); i++) {
             ants[i] = (new Ant(params, r, matrix,pheromone, size, this));
@@ -78,13 +78,13 @@ public class AntColonySystem implements Heuristic {
         return ants;
     }
 
-    public void move(Ant[] ants) {
+    private void move(Ant[] ants) {
         for (int i = 0; i < ants.length; i++) {
             ants[i].next();
         }
     }
 
-    public void setBestTour(Ant[] ants) {
+    private void setBestTour(Ant[] ants) {
         int max = Integer.MIN_VALUE;
         int idx = 0;
 
@@ -96,14 +96,13 @@ public class AntColonySystem implements Heuristic {
         }
     }
 
-    public int getBestTourCost() {
+    private int getBestTourCost() {
         return bestTourCost;
     }
 
-    public int[] getBestTour() {
+    private int[] getBestTour() {
         return bestTour;
     }
-
 
     @Override
     public Pair<int[],Integer> run(AntColonySystem antColonySystem, TwoOpt twoOpt, long startTime, long endTime) {

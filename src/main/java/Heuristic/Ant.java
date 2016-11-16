@@ -55,7 +55,7 @@ public class Ant {
         updateState(random);
     }
 
-    private double randomProportionalRule(int previous, int next) {
+    public double randomProportionalRule(int previous, int next) {
         return Utility.pow(pheromone[previous][next], params.getAlfa()) * Utility.pow(1d / (matrix[previous][next] + 0.0001), params.getBeta());
     }
 
@@ -102,6 +102,7 @@ public class Ant {
                         out -= probability;
                     }
                 }
+            // should never happen!
             throw new RuntimeException("Error in exploration");
         }
     }
@@ -125,11 +126,13 @@ public class Ant {
         return this.localTour;
     }
 
-    public void setLocalTour(int[] localTour) {
-        this.localTour = localTour;
-    }
-
     public void setTotalDistance(int totalDistance) {
         this.totalDistance = totalDistance;
+    }
+
+    // public methods
+
+    public void setLocalTour(int[] localTour) {
+        this.localTour = localTour;
     }
 }
