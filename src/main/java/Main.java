@@ -1,5 +1,7 @@
 import com.google.common.base.Stopwatch;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -38,38 +40,30 @@ public class Main {
         container.populateContainer(args[0]);
         container.populateMatrix();
 
+        // create a random generator
         Random r = new Random(container.getSeed());
 
+        // initial solution
         NearestNeighbor nearestNeighbor = new NearestNeighbor(container.getMatrix(), r);
         Tour tour = nearestNeighbor.ElementaryMyDearWatson(container.getNodes(), -1);
         tour.setCost(tour.getTourCost(tour.getTuor(), container));
 
+        // intialize paramaters and local search
         TwoOpt twoOpt = new TwoOpt(container.getMatrix());
         Parameters params = setupParameters(container.getName());
-        System.out.println(params.toString());
 
-
+        // intialize ant colony system
         AntColonySystem antColonySystem = new AntColonySystem(params, container.getMatrix(), tour, r);
         antColonySystem.initPheromone();
 
-        while (((System.currentTimeMillis() - startTime) < endTime)) {
+        // run ant colony system
+        Pair result = antColonySystem.run(antColonySystem, twoOpt, startTime, endTime);
 
-            Ant[] ants = antColonySystem.initAnts();
-
-            for (int i = 0; i < container.getDimension(); i++) {
-                antColonySystem.move(ants);
-            }
-
-            for (int i = 0; i < params.getAnts(); i++) {
-                ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour()));
-            }
-
-            antColonySystem.setBestTour(ants);
-            antColonySystem.globalUpdate();
-        }
-        writeSeed(container.getName(), container.getBest(), container.getSeed(), antColonySystem.getBestTourCost(), params, antColonySystem.getBestTour());
-        System.out.println("Best Tour found with cost: " + antColonySystem.getBestTourCost());
+        // write result
+        writeSeed(container.getName(), container.getBest(), container.getSeed(), (int) result.snd, params, (int[]) result.fst);
     }
+
+    // Private Methods
 
     private static void writeSeed(String filename, int bestCost, int seed, int antBestCost, Parameters params, int[] cities) throws IOException {
 
@@ -93,27 +87,24 @@ public class Main {
             }
             outputStream.close();
         }
+        System.out.println("A solution has been found! The report has been written to: " + filename + ".txt");
     }
-
-    // Private Methods
 
     private static void _usage() {
         System.out.println("java Main <file>");
     }
 
-    // Public Methods
-
-    public static String getFileName(String filepath) {
+    private static String getFileName(String filepath) {
         int idx = COMPILE.matcher(filepath).replaceAll("/").lastIndexOf("/");
         return idx >= 0 ? filepath.substring(idx + 1) : filepath;
     }
 
-    public static int getDimension(String filepath) {
+    private static int getDimension(String filepath) {
         String filename = getFileName(filepath);
         return Integer.parseInt(PATTERN.matcher(filename).replaceAll(""));
     }
 
-    public static Boolean isValidPath(String[] args) {
+    private static Boolean isValidPath(String[] args) {
         if (args.length != 2) {
             _usage();
             return false;
@@ -129,7 +120,7 @@ public class Main {
         }
     }
 
-    public static Parameters setupParameters(String filename){
+    private static Parameters setupParameters(String filename){
 
         if(filename.equals("eil76.tsp")) {
             return new Parameters(0.2d, 2d, 0.9d, 0.1d, 5);

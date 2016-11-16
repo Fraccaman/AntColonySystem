@@ -1,7 +1,10 @@
 package Heuristic;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.util.Random;
 
+import LocalSearch.TwoOpt;
 import Utility.City;
 import Utility.Parameters;
 import Utility.Tour;
@@ -99,5 +102,28 @@ public class AntColonySystem implements Heuristic {
 
     public int[] getBestTour() {
         return bestTour;
+    }
+
+
+    @Override
+    public Pair<int[],Integer> run(AntColonySystem antColonySystem, TwoOpt twoOpt, long startTime, long endTime) {
+
+        while (((System.currentTimeMillis() - startTime) < endTime)) {
+
+            Ant[] ants = antColonySystem.initAnts();
+
+            for (int i = 0; i < size; i++) {
+                antColonySystem.move(ants);
+            }
+
+            for (int i = 0; i < params.getAnts(); i++) {
+                ants[i].setTotalDistance(twoOpt.ElementaryMyDearWatson(ants[i].getLocalTour()));
+            }
+
+            antColonySystem.setBestTour(ants);
+            antColonySystem.globalUpdate();
+        }
+
+        return new Pair(antColonySystem.getBestTour(), antColonySystem.getBestTourCost());
     }
 }
