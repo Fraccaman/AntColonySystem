@@ -1,5 +1,3 @@
-import com.sun.tools.javac.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,10 +12,13 @@ import LocalSearch.TwoOpt;
 import Utility.Container;
 import Utility.Parameters;
 import Utility.Tour;
+import Utility.XSRandom;
+import Utility.Pair;
 
 /**
  * Created by FraccaMan on 08/11/16.
  */
+
 public class Main {
 
     private static final Pattern COMPILE = Pattern.compile("\\\\");
@@ -38,7 +39,10 @@ public class Main {
         container.populateMatrix();
 
         // create a random generator
-        Random r = new Random(container.getSeed());
+
+        XSRandom r = new XSRandom(container.getSeed());
+//        Random r = new XSRandom(container.getSeed());
+//        Random r = new Random(container.getSeed());
 
         // initial solution
         NearestNeighbor nearestNeighbor = new NearestNeighbor(container.getMatrix(), r);
@@ -65,6 +69,7 @@ public class Main {
     private static void writeSeed(String filename, int bestCost, int seed, int antBestCost, Parameters params, int[] cities) throws IOException {
 
         File file = new File(filename + ".txt");
+        System.out.println("antBestCost = " + antBestCost);
         int bestYet;
         if (file.exists()) {
             BufferedReader brTest = new BufferedReader(new FileReader(filename + ".txt"));

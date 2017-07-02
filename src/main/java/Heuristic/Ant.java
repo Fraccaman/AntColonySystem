@@ -1,8 +1,10 @@
 package Heuristic;
 
+import java.util.Hashtable;
 import java.util.Random;
 
 import Utility.Parameters;
+import Utility.XSRandom;
 import Utility.Utility;
 
 /**
@@ -13,13 +15,13 @@ public class Ant {
     private static double[][] pheromone;
     private Parameters params;
     private AntColonySystem acs;
-    private Random r;
+    private XSRandom r;
     private int[][] matrix;
     private int[] localTour, cities;
     private Boolean[] visited;
     private int size, totalDistance, index, last;
 
-    public Ant(Parameters params, Random random, int[][] matrix, double[][] pheromone, int size, AntColonySystem acs) {
+    public Ant(Parameters params, XSRandom random, int[][] matrix, double[][] pheromone, int size, AntColonySystem acs) {
         this.acs = acs;
         this.params = params;
         this.r = random;
@@ -56,6 +58,23 @@ public class Ant {
     }
 
     public double randomProportionalRule(int previous, int next) {
+//        double first;
+//        double second;
+//
+//        first = this.acs.pows.containsKey(pheromone[previous][next]) ? this.acs.pows.get(pheromone[previous][next]) : 0;
+//        second = this.acs.pows.containsKey(1d / (matrix[previous][next] + 0.0001)) ? this.acs.pows.get(1d / (matrix[previous][next] + 0.0001)) : 0;
+//
+//        if(first == 0) {
+//            first = Utility.pow(pheromone[previous][next], params.getAlfa());
+//            this.acs.pows.put(pheromone[previous][next], first);
+//        }
+//        if(second == 0) {
+//            second = Utility.pow(1d / (matrix[previous][next] + 0.0001), params.getBeta());
+//            this.acs.pows.put(1d / (matrix[previous][next] + 0.0001), second);
+//        }
+
+//        return first * second;
+
         return Utility.pow(pheromone[previous][next], params.getAlfa()) * Utility.pow(1d / (matrix[previous][next] + 0.0001), params.getBeta());
     }
 

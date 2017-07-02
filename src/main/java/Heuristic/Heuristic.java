@@ -1,8 +1,7 @@
 package Heuristic;
 
-import com.sun.tools.javac.util.Pair;
-
 import LocalSearch.TwoOpt;
+import Utility.Pair;
 
 /**
  * Created by FraccaMan on 08/11/16.

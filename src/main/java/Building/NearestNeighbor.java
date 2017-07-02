@@ -4,6 +4,7 @@ import java.util.Random;
 
 import Utility.City;
 import Utility.Tour;
+import Utility.XSRandom;
 
 /**
  * Created by FraccaMan on 08/11/16.
@@ -12,9 +13,9 @@ public class NearestNeighbor implements Building {
 
     private int[][] matrix;
     private int dimension;
-    private Random r;
+    private XSRandom r;
 
-    public NearestNeighbor(int[][] matrix, Random r) {
+    public NearestNeighbor(int[][] matrix, XSRandom r) {
         this.matrix = matrix;
         this.dimension = matrix.length;
         this.r = r;

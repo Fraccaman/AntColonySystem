@@ -5,8 +5,7 @@ package Utility;
  */
 public final class Utility {
 
-    private Utility() {
-    }
+    private Utility() {}
 
     // Private Methods
 
@@ -24,62 +23,6 @@ public final class Utility {
 
     public static double sqrt(final double d) {
         return d * _invSqrt(d); // ~10% faster than Math.sqrt.
-    }
-
-    private static void merge(Comparable[] a, Comparable[] aux, int low, int mid, int high) {
-        for (int i = low; i <= high; i++) {
-            aux[i] = a[i]; // copy over elements from low to high
-        }
-
-        int i = low;
-        int j = mid + 1;
-        for (int k = low; k <= high; k++) {
-            if (i > mid) a[k] = aux[j++];
-            else if (j > high) a[k] = aux[i++];
-            else if (less(aux[j], aux[i])) a[k] = aux[j++];
-            else a[k] = aux[i++];
-        }
-    }
-
-    private static boolean less(Comparable a, Comparable b) {
-        return a.compareTo(b) < 0;
-    }
-
-    private static void insertionSort(Comparable[] a, int low, int high) {
-        for (int i = low + 1; i <= high; i++) {
-            for (int j = i - 1; j >= low; j--) {
-                if (less(a[j + 1], a[j])) {
-                    Comparable temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
-                } else break;
-            }
-        }
-    }
-
-    private static void sort(Comparable[] a, Comparable[] aux, int low, int high) {
-        if (low >= high) return;
-        if (high - low + 1 >= 7) {
-            // use insertion sort instead
-            insertionSort(a, low, high);
-            return;
-        }
-        int mid = (low + high) / 2;
-        // sort the left half
-        sort(a, aux, low, mid);
-        // sort the right half
-        sort(a, aux, mid + 1, high);
-        // merge the two sorted halves
-        if (less(a[mid], a[mid + 1])) return; // already sorted, no need to merge
-        merge(a, aux, low, mid, high);
-    }
-
-    // Public Methods
-
-    public static void sort(Comparable[] a) {
-        int len = a.length;
-        Comparable[] aux = new Comparable[len];
-        sort(a, aux, 0, len - 1);
     }
 
     public static double pow(double a, double b) {

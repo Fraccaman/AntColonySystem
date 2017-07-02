@@ -1,12 +1,13 @@
 package Heuristic;
 
-import com.sun.tools.javac.util.Pair;
-
+import java.util.Hashtable;
 import java.util.Random;
 
 import LocalSearch.TwoOpt;
 import Utility.Parameters;
 import Utility.Tour;
+import Utility.Pair;
+import Utility.XSRandom;
 
 /**
  * Created by FraccaMan on 08/11/16.
@@ -16,12 +17,14 @@ public class AntColonySystem implements Heuristic {
     private Parameters params;
     private int[][] matrix;
     private double[][] pheromone;
-    private Random r;
+    private XSRandom r;
     private int[] bestTour;
     private int bestTourCost, size;
     private double initialPheromone;
 
-    public AntColonySystem(Parameters params, int[][] matrix, Tour tour, Random r) {
+    public Hashtable<Double, Double> pows;
+
+    public AntColonySystem(Parameters params, int[][] matrix, Tour tour, XSRandom r) {
         this.params = params;
         this.r = r;
         this.size = tour.getTuor().length;
@@ -33,6 +36,7 @@ public class AntColonySystem implements Heuristic {
         }
         this.bestTourCost = tour.getCost();
         this.initialPheromone = 1d / (size * bestTourCost);
+        this.pows = new Hashtable<>();
     }
 
     public void initPheromone() {
@@ -106,7 +110,11 @@ public class AntColonySystem implements Heuristic {
     @Override
     public Pair<int[], Integer> ElementaryMyDearWatson(AntColonySystem antColonySystem, TwoOpt twoOpt, long startTime, long endTime) {
 
+        int loops = 0;
+
         while (((System.currentTimeMillis() - startTime) < endTime)) {
+
+            loops += 1;
 
             Ant[] ants = antColonySystem.initAnts();
 
@@ -121,6 +129,8 @@ public class AntColonySystem implements Heuristic {
             antColonySystem.setBestTour(ants);
             antColonySystem.globalUpdate();
         }
+
+        System.out.println("loops: " + loops);
 
         return new Pair(antColonySystem.getBestTour(), antColonySystem.getBestTourCost());
     }
