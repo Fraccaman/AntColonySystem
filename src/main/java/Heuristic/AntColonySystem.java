@@ -1,7 +1,6 @@
 package Heuristic;
 
 import java.util.Hashtable;
-import java.util.Random;
 
 import LocalSearch.TwoOpt;
 import Utility.Parameters;

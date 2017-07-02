@@ -40,9 +40,7 @@ public class Main {
 
         // create a random generator
 
-        XSRandom r = new XSRandom(container.getSeed());
-//        Random r = new XSRandom(container.getSeed());
-//        Random r = new Random(container.getSeed());
+        XSRandom r = new XSRandom(123);
 
         // initial solution
         NearestNeighbor nearestNeighbor = new NearestNeighbor(container.getMatrix(), r);
@@ -138,7 +136,7 @@ public class Main {
             return new Parameters(0.2d, 2d, 0.85d, 0.1d, 5);
         } else if (filename.equals("pcb442.tsp")) {
             return new Parameters(0.2d, 2d, 0.9d, 0.1d, 5);
-        } else if (filename.equals("rat783.tsp")) {
+        } else if (filename.equals("rat783t.tsp")) {
             return new Parameters(0.2d, 2d, 0.85d, 0.1d, 5);
         } else if (filename.equals("u1060.tsp")) {
             return new Parameters(0.5d, 5d, 0.9d, 0.1d, 5);
@@ -146,6 +144,6 @@ public class Main {
             return new Parameters(0.5d, 7d, 0.85d, 0.1d, 10);
         }
         System.out.println("DEFAULT PARAMETER");
-        return new Parameters(0.1d, 2d, 0.9d, 0.1d, 5);
+        return new Parameters(0.5d, 7d, 0.85d, 0.1d, 10);
     }
 }
